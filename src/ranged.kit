@@ -143,50 +143,50 @@ struct RangedInt {
         (${one: RangedInt} **= ${two: RangedFloat}) => $one.set(pow($one.val,                        $two.val));
 
 
-        (${one: RangedInt} ==  ${two: RangedInt}) => $one.val == $two.val;
-        (${one: RangedInt} <=  ${two: RangedInt}) => $one.val <= $two.val;
-        (${one: RangedInt} >=  ${two: RangedInt}) => $one.val >= $two.val;
-        (${one: RangedInt} !=  ${two: RangedInt}) => $one.val != $two.val;
-        (${one: RangedInt} >   ${two: RangedInt}) => $one.val >  $two.val;
-        (${one: RangedInt} <   ${two: RangedInt}) => $one.val <  $two.val;
-        (${one: RangedInt} ||  ${two: RangedInt}) => $one.val || $two.val;
-        (${one: RangedInt} &&  ${two: RangedInt}) => $one.val && $two.val;
+        (${one: RangedInt} ==  ${two: RangedInt}) => $one.get() == $two.get();
+        (${one: RangedInt} <=  ${two: RangedInt}) => $one.get() <= $two.get();
+        (${one: RangedInt} >=  ${two: RangedInt}) => $one.get() >= $two.get();
+        (${one: RangedInt} !=  ${two: RangedInt}) => $one.get() != $two.get();
+        (${one: RangedInt} >   ${two: RangedInt}) => $one.get() >  $two.get();
+        (${one: RangedInt} <   ${two: RangedInt}) => $one.get() <  $two.get();
+        (${one: RangedInt} ||  ${two: RangedInt}) => $one.get() || $two.get();
+        (${one: RangedInt} &&  ${two: RangedInt}) => $one.get() && $two.get();
 
-        (${one: RangedInt} ==  ${two: Int})       => $one.val == $two;
-        (${one: RangedInt} <=  ${two: Int})       => $one.val <= $two;
-        (${one: RangedInt} >=  ${two: Int})       => $one.val >= $two;
-        (${one: RangedInt} !=  ${two: Int})       => $one.val != $two;
-        (${one: RangedInt} >   ${two: Int})       => $one.val >  $two;
-        (${one: RangedInt} <   ${two: Int})       => $one.val <  $two;
-        (${one: RangedInt} ||  ${two: Int})       => $one.val || $two;
-        (${one: RangedInt} &&  ${two: Int})       => $one.val && $two;
+        (${one: RangedInt} ==  ${two: Int})       => $one.get() == $two;
+        (${one: RangedInt} <=  ${two: Int})       => $one.get() <= $two;
+        (${one: RangedInt} >=  ${two: Int})       => $one.get() >= $two;
+        (${one: RangedInt} !=  ${two: Int})       => $one.get() != $two;
+        (${one: RangedInt} >   ${two: Int})       => $one.get() >  $two;
+        (${one: RangedInt} <   ${two: Int})       => $one.get() <  $two;
+        (${one: RangedInt} ||  ${two: Int})       => $one.get() || $two;
+        (${one: RangedInt} &&  ${two: Int})       => $one.get() && $two;
 
-        (${one: Int}       ==  ${two: RangedInt}) => $one     == $two.val;
-        (${one: Int}       <=  ${two: RangedInt}) => $one     <= $two.val;
-        (${one: Int}       >=  ${two: RangedInt}) => $one     >= $two.val;
-        (${one: Int}       !=  ${two: RangedInt}) => $one     != $two.val;
-        (${one: Int}       >   ${two: RangedInt}) => $one     >  $two.val;
-        (${one: Int}       <   ${two: RangedInt}) => $one     <  $two.val;
-        (${one: Int}       ||  ${two: RangedInt}) => $one     || $two.val;
-        (${one: Int}       &&  ${two: RangedInt}) => $one     && $two.val;
+        (${one: Int}       ==  ${two: RangedInt}) => $one       == $two.get();
+        (${one: Int}       <=  ${two: RangedInt}) => $one       <= $two.get();
+        (${one: Int}       >=  ${two: RangedInt}) => $one       >= $two.get();
+        (${one: Int}       !=  ${two: RangedInt}) => $one       != $two.get();
+        (${one: Int}       >   ${two: RangedInt}) => $one       >  $two.get();
+        (${one: Int}       <   ${two: RangedInt}) => $one       <  $two.get();
+        (${one: Int}       ||  ${two: RangedInt}) => $one       || $two.get();
+        (${one: Int}       &&  ${two: RangedInt}) => $one       && $two.get();
 
-        (${one: RangedInt} ==  ${two: Float})     => $one.val == $two;
-        (${one: RangedInt} <=  ${two: Float})     => $one.val <= $two;
-        (${one: RangedInt} >=  ${two: Float})     => $one.val >= $two;
-        (${one: RangedInt} !=  ${two: Float})     => $one.val != $two;
-        (${one: RangedInt} >   ${two: Float})     => $one.val >  $two;
-        (${one: RangedInt} <   ${two: Float})     => $one.val <  $two;
-        (${one: RangedInt} ||  ${two: Float})     => $one.val || $two;
-        (${one: RangedInt} &&  ${two: Float})     => $one.val && $two;
+        (${one: RangedInt} ==  ${two: Float})     => $one.get() == $two;
+        (${one: RangedInt} <=  ${two: Float})     => $one.get() <= $two;
+        (${one: RangedInt} >=  ${two: Float})     => $one.get() >= $two;
+        (${one: RangedInt} !=  ${two: Float})     => $one.get() != $two;
+        (${one: RangedInt} >   ${two: Float})     => $one.get() >  $two;
+        (${one: RangedInt} <   ${two: Float})     => $one.get() <  $two;
+        (${one: RangedInt} ||  ${two: Float})     => $one.get() || $two;
+        (${one: RangedInt} &&  ${two: Float})     => $one.get() && $two;
 
-        (${one: Float}     ==  ${two: RangedInt}) => $one     == $two.val;
-        (${one: Float}     <=  ${two: RangedInt}) => $one     <= $two.val;
-        (${one: Float}     >=  ${two: RangedInt}) => $one     >= $two.val;
-        (${one: Float}     !=  ${two: RangedInt}) => $one     != $two.val;
-        (${one: Float}     >   ${two: RangedInt}) => $one     >  $two.val;
-        (${one: Float}     <   ${two: RangedInt}) => $one     <  $two.val;
-        (${one: Float}     ||  ${two: RangedInt}) => $one     || $two.val;
-        (${one: Float}     &&  ${two: RangedInt}) => $one     && $two.val;
+        (${one: Float}     ==  ${two: RangedInt}) => $one       == $two.get();
+        (${one: Float}     <=  ${two: RangedInt}) => $one       <= $two.get();
+        (${one: Float}     >=  ${two: RangedInt}) => $one       >= $two.get();
+        (${one: Float}     !=  ${two: RangedInt}) => $one       != $two.get();
+        (${one: Float}     >   ${two: RangedInt}) => $one       >  $two.get();
+        (${one: Float}     <   ${two: RangedInt}) => $one       <  $two.get();
+        (${one: Float}     ||  ${two: RangedInt}) => $one       || $two.get();
+        (${one: Float}     &&  ${two: RangedInt}) => $one       && $two.get();
     }
 }
 
@@ -325,68 +325,68 @@ struct RangedFloat {
         (${one: RangedFloat} **= ${two: RangedInt})    => $one.set(pow($one.val,         $two.val));
 
 
-        (${one: RangedFloat} ==  ${two: RangedFloat}) => $one.val == $two.val;
-        (${one: RangedFloat} <=  ${two: RangedFloat}) => $one.val <= $two.val;
-        (${one: RangedFloat} >=  ${two: RangedFloat}) => $one.val >= $two.val;
-        (${one: RangedFloat} !=  ${two: RangedFloat}) => $one.val != $two.val;
-        (${one: RangedFloat} >   ${two: RangedFloat}) => $one.val >  $two.val;
-        (${one: RangedFloat} <   ${two: RangedFloat}) => $one.val <  $two.val;
-        (${one: RangedFloat} ||  ${two: RangedFloat}) => $one.val || $two.val;
-        (${one: RangedFloat} &&  ${two: RangedFloat}) => $one.val && $two.val;
+        (${one: RangedFloat} ==  ${two: RangedFloat}) => $one.get() == $two.get();
+        (${one: RangedFloat} <=  ${two: RangedFloat}) => $one.get() <= $two.get();
+        (${one: RangedFloat} >=  ${two: RangedFloat}) => $one.get() >= $two.get();
+        (${one: RangedFloat} !=  ${two: RangedFloat}) => $one.get() != $two.get();
+        (${one: RangedFloat} >   ${two: RangedFloat}) => $one.get() >  $two.get();
+        (${one: RangedFloat} <   ${two: RangedFloat}) => $one.get() <  $two.get();
+        (${one: RangedFloat} ||  ${two: RangedFloat}) => $one.get() || $two.get();
+        (${one: RangedFloat} &&  ${two: RangedFloat}) => $one.get() && $two.get();
 
-        (${one: RangedFloat} ==  ${two: Int})         => $one.val == $two;
-        (${one: RangedFloat} <=  ${two: Int})         => $one.val <= $two;
-        (${one: RangedFloat} >=  ${two: Int})         => $one.val >= $two;
-        (${one: RangedFloat} !=  ${two: Int})         => $one.val != $two;
-        (${one: RangedFloat} >   ${two: Int})         => $one.val >  $two;
-        (${one: RangedFloat} <   ${two: Int})         => $one.val <  $two;
-        (${one: RangedFloat} ||  ${two: Int})         => $one.val || $two;
-        (${one: RangedFloat} &&  ${two: Int})         => $one.val && $two;
+        (${one: RangedFloat} ==  ${two: Int})         => $one.get() == $two;
+        (${one: RangedFloat} <=  ${two: Int})         => $one.get() <= $two;
+        (${one: RangedFloat} >=  ${two: Int})         => $one.get() >= $two;
+        (${one: RangedFloat} !=  ${two: Int})         => $one.get() != $two;
+        (${one: RangedFloat} >   ${two: Int})         => $one.get() >  $two;
+        (${one: RangedFloat} <   ${two: Int})         => $one.get() <  $two;
+        (${one: RangedFloat} ||  ${two: Int})         => $one.get() || $two;
+        (${one: RangedFloat} &&  ${two: Int})         => $one.get() && $two;
 
-        (${one: Int}         ==  ${two: RangedFloat}) => $one     == $two.val;
-        (${one: Int}         <=  ${two: RangedFloat}) => $one     <= $two.val;
-        (${one: Int}         >=  ${two: RangedFloat}) => $one     >= $two.val;
-        (${one: Int}         !=  ${two: RangedFloat}) => $one     != $two.val;
-        (${one: Int}         >   ${two: RangedFloat}) => $one     >  $two.val;
-        (${one: Int}         <   ${two: RangedFloat}) => $one     <  $two.val;
-        (${one: Int}         ||  ${two: RangedFloat}) => $one     || $two.val;
-        (${one: Int}         &&  ${two: RangedFloat}) => $one     && $two.val;
+        (${one: Int}         ==  ${two: RangedFloat}) => $one       == $two.get();
+        (${one: Int}         <=  ${two: RangedFloat}) => $one       <= $two.get();
+        (${one: Int}         >=  ${two: RangedFloat}) => $one       >= $two.get();
+        (${one: Int}         !=  ${two: RangedFloat}) => $one       != $two.get();
+        (${one: Int}         >   ${two: RangedFloat}) => $one       >  $two.get();
+        (${one: Int}         <   ${two: RangedFloat}) => $one       <  $two.get();
+        (${one: Int}         ||  ${two: RangedFloat}) => $one       || $two.get();
+        (${one: Int}         &&  ${two: RangedFloat}) => $one       && $two.get();
 
-        (${one: RangedFloat} ==  ${two: Float})       => $one.val == $two;
-        (${one: RangedFloat} <=  ${two: Float})       => $one.val <= $two;
-        (${one: RangedFloat} >=  ${two: Float})       => $one.val >= $two;
-        (${one: RangedFloat} !=  ${two: Float})       => $one.val != $two;
-        (${one: RangedFloat} >   ${two: Float})       => $one.val >  $two;
-        (${one: RangedFloat} <   ${two: Float})       => $one.val <  $two;
-        (${one: RangedFloat} ||  ${two: Float})       => $one.val || $two;
-        (${one: RangedFloat} &&  ${two: Float})       => $one.val && $two;
+        (${one: RangedFloat} ==  ${two: Float})       => $one.get() == $two;
+        (${one: RangedFloat} <=  ${two: Float})       => $one.get() <= $two;
+        (${one: RangedFloat} >=  ${two: Float})       => $one.get() >= $two;
+        (${one: RangedFloat} !=  ${two: Float})       => $one.get() != $two;
+        (${one: RangedFloat} >   ${two: Float})       => $one.get() >  $two;
+        (${one: RangedFloat} <   ${two: Float})       => $one.get() <  $two;
+        (${one: RangedFloat} ||  ${two: Float})       => $one.get() || $two;
+        (${one: RangedFloat} &&  ${two: Float})       => $one.get() && $two;
 
-        (${one: Float}       ==  ${two: RangedFloat}) => $one     == $two.val;
-        (${one: Float}       <=  ${two: RangedFloat}) => $one     <= $two.val;
-        (${one: Float}       >=  ${two: RangedFloat}) => $one     >= $two.val;
-        (${one: Float}       !=  ${two: RangedFloat}) => $one     != $two.val;
-        (${one: Float}       >   ${two: RangedFloat}) => $one     >  $two.val;
-        (${one: Float}       <   ${two: RangedFloat}) => $one     <  $two.val;
-        (${one: Float}       ||  ${two: RangedFloat}) => $one     || $two.val;
-        (${one: Float}       &&  ${two: RangedFloat}) => $one     && $two.val;
+        (${one: Float}       ==  ${two: RangedFloat}) => $one       == $two.get();
+        (${one: Float}       <=  ${two: RangedFloat}) => $one       <= $two.get();
+        (${one: Float}       >=  ${two: RangedFloat}) => $one       >= $two.get();
+        (${one: Float}       !=  ${two: RangedFloat}) => $one       != $two.get();
+        (${one: Float}       >   ${two: RangedFloat}) => $one       >  $two.get();
+        (${one: Float}       <   ${two: RangedFloat}) => $one       <  $two.get();
+        (${one: Float}       ||  ${two: RangedFloat}) => $one       || $two.get();
+        (${one: Float}       &&  ${two: RangedFloat}) => $one       && $two.get();
 
-        (${one: RangedInt}   ==  ${two: RangedFloat}) => $one.val == $two.val;
-        (${one: RangedInt}   <=  ${two: RangedFloat}) => $one.val <= $two.val;
-        (${one: RangedInt}   >=  ${two: RangedFloat}) => $one.val >= $two.val;
-        (${one: RangedInt}   !=  ${two: RangedFloat}) => $one.val != $two.val;
-        (${one: RangedInt}   >   ${two: RangedFloat}) => $one.val >  $two.val;
-        (${one: RangedInt}   <   ${two: RangedFloat}) => $one.val <  $two.val;
-        (${one: RangedInt}   ||  ${two: RangedFloat}) => $one.val || $two.val;
-        (${one: RangedInt}   &&  ${two: RangedFloat}) => $one.val && $two.val;
+        (${one: RangedInt}   ==  ${two: RangedFloat}) => $one.get() == $two.get();
+        (${one: RangedInt}   <=  ${two: RangedFloat}) => $one.get() <= $two.get();
+        (${one: RangedInt}   >=  ${two: RangedFloat}) => $one.get() >= $two.get();
+        (${one: RangedInt}   !=  ${two: RangedFloat}) => $one.get() != $two.get();
+        (${one: RangedInt}   >   ${two: RangedFloat}) => $one.get() >  $two.get();
+        (${one: RangedInt}   <   ${two: RangedFloat}) => $one.get() <  $two.get();
+        (${one: RangedInt}   ||  ${two: RangedFloat}) => $one.get() || $two.get();
+        (${one: RangedInt}   &&  ${two: RangedFloat}) => $one.get() && $two.get();
 
-        (${one: RangedFloat} ==  ${two: RangedInt})   => $one.val == $two.val;
-        (${one: RangedFloat} <=  ${two: RangedInt})   => $one.val <= $two.val;
-        (${one: RangedFloat} >=  ${two: RangedInt})   => $one.val >= $two.val;
-        (${one: RangedFloat} !=  ${two: RangedInt})   => $one.val != $two.val;
-        (${one: RangedFloat} >   ${two: RangedInt})   => $one.val >  $two.val;
-        (${one: RangedFloat} <   ${two: RangedInt})   => $one.val <  $two.val;
-        (${one: RangedFloat} ||  ${two: RangedInt})   => $one.val || $two.val;
-        (${one: RangedFloat} &&  ${two: RangedInt})   => $one.val && $two.val;
+        (${one: RangedFloat} ==  ${two: RangedInt})   => $one.get() == $two.get();
+        (${one: RangedFloat} <=  ${two: RangedInt})   => $one.get() <= $two.get();
+        (${one: RangedFloat} >=  ${two: RangedInt})   => $one.get() >= $two.get();
+        (${one: RangedFloat} !=  ${two: RangedInt})   => $one.get() != $two.get();
+        (${one: RangedFloat} >   ${two: RangedInt})   => $one.get() >  $two.get();
+        (${one: RangedFloat} <   ${two: RangedInt})   => $one.get() <  $two.get();
+        (${one: RangedFloat} ||  ${two: RangedInt})   => $one.get() || $two.get();
+        (${one: RangedFloat} &&  ${two: RangedInt})   => $one.get() && $two.get();
     }
 }
 
@@ -394,7 +394,7 @@ struct RangedFloat {
 function main() {
     var rf: RangedFloat = RangedFloat.new(-100, 100, 3, WRAP);
     for n in 0 ... 50 {
-        printf("cycle %d, value %f", n, rf.get());
+        printf("cycle %d, value %f, raw value %f", n, rf.get(), rf.val);
         if rf >= 10 && rf <= 20 {
             printf("  --  between 10 and 20");
         }
