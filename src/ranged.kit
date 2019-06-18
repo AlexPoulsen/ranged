@@ -7,6 +7,24 @@ enum ClampMode {
 }
 
 
+function eucModInt(a: Int, b: Int) {
+    var m: Int = a % b;
+    if m < 0 {
+        m = if b < 0 then m - b else m + b;
+    }
+    return m;
+}
+
+
+function eucModFloat(a: Float, b: Float) {
+    var m: Float = fmod(a, b);
+    if m < 0 {
+        m = if b < 0 then m - b else m + b;
+    }
+    return m;
+}
+
+
 struct RangedInt {
     var min: Int;
     var max: Int;
@@ -18,7 +36,7 @@ struct RangedInt {
         if clampmode == ClampMode.CLIP {
             clamped = xs_ClampInt(val, min, max);
         } else if clampmode == ClampMode.WRAP {
-            clamped = ((val - min) % (max - min)) + min;
+            clamped = eucModInt(val - min, max - min) + min;
         } else {
             fprintf(stderr, "Invalid clampmode\n");
             clamped = val;
@@ -35,7 +53,7 @@ struct RangedInt {
         if this.clampmode == ClampMode.CLIP {
             return xs_ClampInt(val, this.min, this.max);
         } else if this.clampmode == ClampMode.WRAP {
-            return ((val - this.min) % (this.max - this.min)) + this.min;
+            return eucModInt(val - this.min, this.max - this.min) + this.min;
         } else {
             fprintf(stderr, "Invalid clampmode\n");
             return val;
@@ -129,7 +147,7 @@ struct RangedFloat {
         if clampmode == ClampMode.CLIP {
             clamped = xs_ClampFloat(val, min, max);
         } else if clampmode == ClampMode.WRAP {
-            clamped = ((val - min) % (max - min)) + min;
+            clamped = eucModFloat(val - min, max - min) + min;
         } else {
             fprintf(stderr, "Invalid clampmode\n");
             clamped = val;
@@ -146,7 +164,7 @@ struct RangedFloat {
         if this.clampmode == ClampMode.CLIP {
             return xs_ClampFloat(val, this.min, this.max);
         } else if this.clampmode == ClampMode.WRAP {
-            return ((val - this.min) % (this.max - this.min)) + this.min;
+            return eucModFloat(val - this.min, this.max - this.min) + this.min;
         } else {
             fprintf(stderr, "Invalid clampmode\n");
             return val;
