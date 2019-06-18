@@ -7,24 +7,6 @@ enum ClampMode {
 }
 
 
-function eucModInt(a: Int, b: Int) {
-    var m: Int = a % b;
-    if m < 0 {
-        m = if b < 0 then m - b else m + b;
-    }
-    return m;
-}
-
-
-function eucModFloat(a: Float, b: Float) {
-    var m: Float = fmod(a, b);
-    if m < 0 {
-        m = if b < 0 then m - b else m + b;
-    }
-    return m;
-}
-
-
 struct RangedInt {
     var min: Int;
     var max: Int;
@@ -36,7 +18,7 @@ struct RangedInt {
         if clampmode == ClampMode.CLIP {
             clamped = xs_ClampInt(val, min, max);
         } else if clampmode == ClampMode.WRAP {
-            clamped = eucModInt(val - min, max - min) + min;
+            clamped = ((val - min) % (max - min)) + min;
         } else {
             fprintf(stderr, "Invalid clampmode\n");
             clamped = val;
@@ -53,7 +35,7 @@ struct RangedInt {
         if this.clampmode == ClampMode.CLIP {
             return xs_ClampInt(val, this.min, this.max);
         } else if this.clampmode == ClampMode.WRAP {
-            return eucModInt(val - this.min, this.max - this.min) + this.min;
+            return ((val - this.min) % (this.max - this.min)) + this.min;
         } else {
             fprintf(stderr, "Invalid clampmode\n");
             return val;
@@ -147,7 +129,7 @@ struct RangedFloat {
         if clampmode == ClampMode.CLIP {
             clamped = xs_ClampFloat(val, min, max);
         } else if clampmode == ClampMode.WRAP {
-            clamped = eucModFloat(val - min, max - min) + min;
+            clamped = ((val - min) % (max - min)) + min;
         } else {
             fprintf(stderr, "Invalid clampmode\n");
             clamped = val;
@@ -164,7 +146,7 @@ struct RangedFloat {
         if this.clampmode == ClampMode.CLIP {
             return xs_ClampFloat(val, this.min, this.max);
         } else if this.clampmode == ClampMode.WRAP {
-            return eucModFloat(val - this.min, this.max - this.min) + this.min;
+            return ((val - this.min) % (this.max - this.min)) + this.min;
         } else {
             fprintf(stderr, "Invalid clampmode\n");
             return val;
@@ -181,7 +163,6 @@ struct RangedFloat {
 
     rules {
         (${one: RangedFloat} -  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val   -    $two.val);
-        (${one: RangedFloat} +  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val   +    $two.val);
         (${one: RangedFloat} *  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val   *    $two.val);
         (${one: RangedFloat} /  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val   /    $two.val);
         (${one: RangedFloat} %  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val   %    $two.val);
@@ -189,7 +170,6 @@ struct RangedFloat {
         (${one: RangedFloat} ** ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, pow($one.val,   $two.val));
 
         (${one: RangedFloat} -  ${two: Int})           => RangedFloat.new($one.min, $one.max, $one.val   -    $two);
-        (${one: RangedFloat} +  ${two: Int})           => RangedFloat.new($one.min, $one.max, $one.val   +    $two);
         (${one: RangedFloat} *  ${two: Int})           => RangedFloat.new($one.min, $one.max, $one.val   *    $two);
         (${one: RangedFloat} /  ${two: Int})           => RangedFloat.new($one.min, $one.max, $one.val   /    $two);
         (${one: RangedFloat} %  ${two: Int})           => RangedFloat.new($one.min, $one.max, $one.val   %    $two);
@@ -197,7 +177,6 @@ struct RangedFloat {
         (${one: RangedFloat} ** ${two: Int})           => RangedFloat.new($one.min, $one.max, pow($one.val,   $two));
 
         (${one: Int}         -  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one       -    $two.val);
-        (${one: Int}         +  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one       +    $two.val);
         (${one: Int}         *  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one       *    $two.val);
         (${one: Int}         /  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one       /    $two.val);
         (${one: Int}         %  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one       %    $two.val);
@@ -205,7 +184,6 @@ struct RangedFloat {
         (${one: Int}         ** ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, pow($one,       $two.val));
 
         (${one: RangedFloat} -  ${two: Float})         => RangedFloat.new($one.min, $one.max, $one.val -      $two);
-        (${one: RangedFloat} +  ${two: Float})         => RangedFloat.new($one.min, $one.max, $one.val +      $two);
         (${one: RangedFloat} *  ${two: Float})         => RangedFloat.new($one.min, $one.max, $one.val *      $two);
         (${one: RangedFloat} /  ${two: Float})         => RangedFloat.new($one.min, $one.max, $one.val /      $two);
         (${one: RangedFloat} %  ${two: Float})         => RangedFloat.new($one.min, $one.max, $one.val %      $two);
@@ -213,7 +191,6 @@ struct RangedFloat {
         (${one: RangedFloat} ** ${two: Float})         => RangedFloat.new($one.min, $one.max, pow($one.val,   $two));
 
         (${one: Float}       -  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one     -      $two.val);
-        (${one: Float}       +  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one     +      $two.val);
         (${one: Float}       *  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one     *      $two.val);
         (${one: Float}       /  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one     /      $two.val);
         (${one: Float}       %  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one     %      $two.val);
@@ -221,7 +198,6 @@ struct RangedFloat {
         (${one: Float}       ** ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, pow($one,       $two.val));
 
         (${one: RangedInt}   -  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val -      $two.val);
-        (${one: RangedInt}   +  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val +      $two.val);
         (${one: RangedInt}   *  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val *      $two.val);
         (${one: RangedInt}   /  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val /      $two.val);
         (${one: RangedInt}   %  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val %      $two.val);
@@ -229,7 +205,6 @@ struct RangedFloat {
         (${one: RangedInt}   ** ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, pow($one.val,   $two.val));
 
         (${one: RangedFloat} -  ${two: RangedInt})     => RangedFloat.new($one.min, $one.max, $one.val -      $two.val);
-        (${one: RangedFloat} +  ${two: RangedInt})     => RangedFloat.new($one.min, $one.max, $one.val +      $two.val);
         (${one: RangedFloat} *  ${two: RangedInt})     => RangedFloat.new($one.min, $one.max, $one.val *      $two.val);
         (${one: RangedFloat} /  ${two: RangedInt})     => RangedFloat.new($one.min, $one.max, $one.val /      $two.val);
         (${one: RangedFloat} %  ${two: RangedInt})     => RangedFloat.new($one.min, $one.max, $one.val %      $two.val);
