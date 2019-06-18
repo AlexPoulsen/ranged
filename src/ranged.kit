@@ -1,0 +1,252 @@
+import kitten.xs_Rounding;
+
+
+enum ClampMode {
+    CLIP;
+    WRAP;
+}
+
+
+struct RangedInt {
+    var min: Int;
+    var max: Int;
+    var val: Int;
+    var clampmode: ClampMode = ClampMode.CLIP;
+
+    public static function new(min: Int, max: Int, val: Int, clampmode: ClampMode = ClampMode.CLIP): RangedInt {
+        var clamped: Int = xs_ClampInt(val, min, max);
+        if clampmode == ClampMode.CLIP {
+            clamped = xs_ClampInt(val, min, max);
+        } else if clampmode == ClampMode.WRAP {
+            clamped = ((val - min) % (max - min)) + min;
+        } else {
+            fprintf(stderr, "Invalid clampmode\n");
+            clamped = val;
+        }
+        return struct Self {
+            min,
+            max,
+            val: clamped,
+            clampmode
+        };
+    }
+
+    function clamp(val: Int): Int {
+        if this.clampmode == ClampMode.CLIP {
+            return xs_ClampInt(val, this.min, this.max);
+        } else if this.clampmode == ClampMode.WRAP {
+            return ((val - this.min) % (this.max - this.min)) + this.min;
+        } else {
+            fprintf(stderr, "Invalid clampmode\n");
+            return val;
+        }
+    }
+
+    function set(val: Int): Void {
+        this.val = this.clamp(val);
+    }
+
+    function get(): Int {
+        return this.clamp(this.val);
+    }
+
+    rules {
+        (${one: RangedInt} -  ${two: RangedInt})    => RangedInt.new(  $one.min, $one.max, $one.val -                   $two.val);
+        (${one: RangedInt} +  ${two: RangedInt})    => RangedInt.new(  $one.min, $one.max, $one.val +                   $two.val);
+        (${one: RangedInt} *  ${two: RangedInt})    => RangedInt.new(  $one.min, $one.max, $one.val *                   $two.val);
+        (${one: RangedInt} /  ${two: RangedInt})    => RangedInt.new(  $one.min, $one.max, $one.val /                   $two.val);
+        (${one: RangedInt} %  ${two: RangedInt})    => RangedInt.new(  $one.min, $one.max, $one.val %                   $two.val);
+        (${one: RangedInt} ** ${two: RangedInt})    => RangedInt.new(  $one.min, $one.max, xs_CRoundToInt(pow($one.val, $two.val)));
+
+        (${one: RangedInt} -  ${two: Int})          => RangedInt.new(  $one.min, $one.max, $one.val -                   $two);
+        (${one: RangedInt} +  ${two: Int})          => RangedInt.new(  $one.min, $one.max, $one.val +                   $two);
+        (${one: RangedInt} *  ${two: Int})          => RangedInt.new(  $one.min, $one.max, $one.val *                   $two);
+        (${one: RangedInt} /  ${two: Int})          => RangedInt.new(  $one.min, $one.max, $one.val /                   $two);
+        (${one: RangedInt} %  ${two: Int})          => RangedInt.new(  $one.min, $one.max, $one.val %                   $two);
+        (${one: RangedInt} ** ${two: Int})          => RangedInt.new(  $one.min, $one.max, xs_CRoundToInt(pow($one.val, $two)));
+
+        (${one: Int}       -  ${two: RangedInt})    => RangedInt.new(  $two.min, $two.max, $one     -                   $two.val);
+        (${one: Int}       +  ${two: RangedInt})    => RangedInt.new(  $two.min, $two.max, $one     +                   $two.val);
+        (${one: Int}       *  ${two: RangedInt})    => RangedInt.new(  $two.min, $two.max, $one     *                   $two.val);
+        (${one: Int}       /  ${two: RangedInt})    => RangedInt.new(  $two.min, $two.max, $one     /                   $two.val);
+        (${one: Int}       %  ${two: RangedInt})    => RangedInt.new(  $two.min, $two.max, $one     %                   $two.val);
+        (${one: Int}       ** ${two: RangedInt})    => RangedInt.new(  $two.min, $two.max, xs_CRoundToInt(pow($one,     $two.val)));
+
+        (${one: RangedInt} -  ${two: Float})        => RangedFloat.new($one.min, $one.max, $one.val -                   $two);
+        (${one: RangedInt} +  ${two: Float})        => RangedFloat.new($one.min, $one.max, $one.val +                   $two);
+        (${one: RangedInt} *  ${two: Float})        => RangedFloat.new($one.min, $one.max, $one.val *                   $two);
+        (${one: RangedInt} /  ${two: Float})        => RangedFloat.new($one.min, $one.max, $one.val /                   $two);
+        (${one: RangedInt} %  ${two: Float})        => RangedFloat.new($one.min, $one.max, $one.val %                   $two);
+        (${one: RangedInt} ** ${two: Float})        => RangedFloat.new($one.min, $one.max, pow($one.val,                $two));
+
+        (${one: Float}     -  ${two: RangedInt})    => RangedFloat.new($two.min, $two.max, $one     -                   $two.val);
+        (${one: Float}     +  ${two: RangedInt})    => RangedFloat.new($two.min, $two.max, $one     +                   $two.val);
+        (${one: Float}     *  ${two: RangedInt})    => RangedFloat.new($two.min, $two.max, $one     *                   $two.val);
+        (${one: Float}     /  ${two: RangedInt})    => RangedFloat.new($two.min, $two.max, $one     /                   $two.val);
+        (${one: Float}     %  ${two: RangedInt})    => RangedFloat.new($two.min, $two.max, $one     %                   $two.val);
+        (${one: Float}     ** ${two: RangedInt})    => RangedFloat.new($two.min, $two.max, pow($one,                    $two.val));
+
+
+        (${one: RangedInt} -=  ${two: RangedInt})   => $one.set($one.val -                   $two.val);
+        (${one: RangedInt} +=  ${two: RangedInt})   => $one.set($one.val +                   $two.val);
+        (${one: RangedInt} *=  ${two: RangedInt})   => $one.set($one.val *                   $two.val);
+        (${one: RangedInt} /=  ${two: RangedInt})   => $one.set($one.val /                   $two.val);
+        (${one: RangedInt} %=  ${two: RangedInt})   => $one.set($one.val %                   $two.val);
+        (${one: RangedInt} **= ${two: RangedInt})   => $one.set(xs_CRoundToInt(pow($one.val, $two.val)));
+
+        (${one: RangedInt} -=  ${two: Int})         => $one.set($one.val -                   $two);
+        (${one: RangedInt} +=  ${two: Int})         => $one.set($one.val +                   $two);
+        (${one: RangedInt} *=  ${two: Int})         => $one.set($one.val *                   $two);
+        (${one: RangedInt} /=  ${two: Int})         => $one.set($one.val /                   $two);
+        (${one: RangedInt} %=  ${two: Int})         => $one.set($one.val %                   $two);
+        (${one: RangedInt} **= ${two: Int})         => $one.set(xs_CRoundToInt(pow($one.val, $two)));
+
+        (${one: RangedInt} -=  ${two: Float})       => $one.set($one.val -                   $two);
+        (${one: RangedInt} +=  ${two: Float})       => $one.set($one.val +                   $two);
+        (${one: RangedInt} *=  ${two: Float})       => $one.set($one.val *                   $two);
+        (${one: RangedInt} /=  ${two: Float})       => $one.set($one.val /                   $two);
+        (${one: RangedInt} %=  ${two: Float})       => $one.set($one.val %                   $two);
+        (${one: RangedInt} **= ${two: Float})       => $one.set(pow($one.val,                $two));
+
+        (${one: RangedInt} -=  ${two: RangedFloat}) => $one.set($one.val -                   $two.val);
+        (${one: RangedInt} +=  ${two: RangedFloat}) => $one.set($one.val +                   $two.val);
+        (${one: RangedInt} *=  ${two: RangedFloat}) => $one.set($one.val *                   $two.val);
+        (${one: RangedInt} /=  ${two: RangedFloat}) => $one.set($one.val /                   $two.val);
+        (${one: RangedInt} %=  ${two: RangedFloat}) => $one.set($one.val %                   $two.val);
+        (${one: RangedInt} **= ${two: RangedFloat}) => $one.set(pow($one.val,                $two.val));
+    }
+}
+
+
+struct RangedFloat {
+    var min: Float;
+    var max: Float;
+    var val: Float;
+    var clampmode: ClampMode = ClampMode.CLIP;
+
+    public static function new(min: Float, max: Float, val: Float, clampmode: ClampMode = ClampMode.CLIP): RangedFloat {
+        var clamped: Float = xs_ClampFloat(val, min, max);
+        if clampmode == ClampMode.CLIP {
+            clamped = xs_ClampFloat(val, min, max);
+        } else if clampmode == ClampMode.WRAP {
+            clamped = ((val - min) % (max - min)) + min;
+        } else {
+            fprintf(stderr, "Invalid clampmode\n");
+            clamped = val;
+        }
+        return struct Self {
+            min,
+            max,
+            val: clamped,
+            clampmode
+        };
+    }
+
+    function clamp(val: Float): Float {
+        if this.clampmode == ClampMode.CLIP {
+            return xs_ClampFloat(val, this.min, this.max);
+        } else if this.clampmode == ClampMode.WRAP {
+            return ((val - this.min) % (this.max - this.min)) + this.min;
+        } else {
+            fprintf(stderr, "Invalid clampmode\n");
+            return val;
+        }
+    }
+
+    function set(val: Float): Void {
+        this.val = this.clamp(val);
+    }
+
+    function get(): Float {
+        return this.clamp(this.val);
+    }
+
+    rules {
+        (${one: RangedFloat} -  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val   -    $two.val);
+        (${one: RangedFloat} *  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val   *    $two.val);
+        (${one: RangedFloat} /  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val   /    $two.val);
+        (${one: RangedFloat} %  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val   %    $two.val);
+        (${one: RangedFloat} %^ ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val   %    $two.val);
+        (${one: RangedFloat} ** ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, pow($one.val,   $two.val));
+
+        (${one: RangedFloat} -  ${two: Int})           => RangedFloat.new($one.min, $one.max, $one.val   -    $two);
+        (${one: RangedFloat} *  ${two: Int})           => RangedFloat.new($one.min, $one.max, $one.val   *    $two);
+        (${one: RangedFloat} /  ${two: Int})           => RangedFloat.new($one.min, $one.max, $one.val   /    $two);
+        (${one: RangedFloat} %  ${two: Int})           => RangedFloat.new($one.min, $one.max, $one.val   %    $two);
+        (${one: RangedFloat} %^ ${two: Int})           => RangedFloat.new($one.min, $one.max, $one.val   %    $two);
+        (${one: RangedFloat} ** ${two: Int})           => RangedFloat.new($one.min, $one.max, pow($one.val,   $two));
+
+        (${one: Int}         -  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one       -    $two.val);
+        (${one: Int}         *  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one       *    $two.val);
+        (${one: Int}         /  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one       /    $two.val);
+        (${one: Int}         %  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one       %    $two.val);
+        (${one: Int}         %^ ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one       %    $two.val);
+        (${one: Int}         ** ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, pow($one,       $two.val));
+
+        (${one: RangedFloat} -  ${two: Float})         => RangedFloat.new($one.min, $one.max, $one.val -      $two);
+        (${one: RangedFloat} *  ${two: Float})         => RangedFloat.new($one.min, $one.max, $one.val *      $two);
+        (${one: RangedFloat} /  ${two: Float})         => RangedFloat.new($one.min, $one.max, $one.val /      $two);
+        (${one: RangedFloat} %  ${two: Float})         => RangedFloat.new($one.min, $one.max, $one.val %      $two);
+        (${one: RangedFloat} %^ ${two: Float})         => RangedFloat.new($one.min, $one.max, $one.val %      $two);
+        (${one: RangedFloat} ** ${two: Float})         => RangedFloat.new($one.min, $one.max, pow($one.val,   $two));
+
+        (${one: Float}       -  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one     -      $two.val);
+        (${one: Float}       *  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one     *      $two.val);
+        (${one: Float}       /  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one     /      $two.val);
+        (${one: Float}       %  ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one     %      $two.val);
+        (${one: Float}       %^ ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, $one     %      $two.val);
+        (${one: Float}       ** ${two: RangedFloat})   => RangedFloat.new($two.min, $two.max, pow($one,       $two.val));
+
+        (${one: RangedInt}   -  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val -      $two.val);
+        (${one: RangedInt}   *  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val *      $two.val);
+        (${one: RangedInt}   /  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val /      $two.val);
+        (${one: RangedInt}   %  ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val %      $two.val);
+        (${one: RangedInt}   %^ ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, $one.val %      $two.val);
+        (${one: RangedInt}   ** ${two: RangedFloat})   => RangedFloat.new($one.min, $one.max, pow($one.val,   $two.val));
+
+        (${one: RangedFloat} -  ${two: RangedInt})     => RangedFloat.new($one.min, $one.max, $one.val -      $two.val);
+        (${one: RangedFloat} *  ${two: RangedInt})     => RangedFloat.new($one.min, $one.max, $one.val *      $two.val);
+        (${one: RangedFloat} /  ${two: RangedInt})     => RangedFloat.new($one.min, $one.max, $one.val /      $two.val);
+        (${one: RangedFloat} %  ${two: RangedInt})     => RangedFloat.new($one.min, $one.max, $one.val %      $two.val);
+        (${one: RangedFloat} %^ ${two: RangedInt})     => RangedFloat.new($one.min, $one.max, $one.val %      $two.val);
+        (${one: RangedFloat} ** ${two: RangedInt})     => RangedFloat.new($one.min, $one.max, pow($one.val,   $two.val));
+
+
+        (${one: RangedFloat} -=  ${two: RangedFloat})  => $one.set($one.val -    $two.val);
+        (${one: RangedFloat} +=  ${two: RangedFloat})  => $one.set($one.val +    $two.val);
+        (${one: RangedFloat} *=  ${two: RangedFloat})  => $one.set($one.val *    $two.val);
+        (${one: RangedFloat} /=  ${two: RangedFloat})  => $one.set($one.val /    $two.val);
+        (${one: RangedFloat} %=  ${two: RangedFloat})  => $one.set($one.val %    $two.val);
+        (${one: RangedFloat} **= ${two: RangedFloat})  => $one.set(pow($one.val, $two.val));
+
+        (${one: RangedFloat} -=  ${two: Int})          => $one.set($one.val -    $two);
+        (${one: RangedFloat} +=  ${two: Int})          => $one.set($one.val +    $two);
+        (${one: RangedFloat} *=  ${two: Int})          => $one.set($one.val *    $two);
+        (${one: RangedFloat} /=  ${two: Int})          => $one.set($one.val /    $two);
+        (${one: RangedFloat} %=  ${two: Int})          => $one.set($one.val %    $two);
+        (${one: RangedFloat} **= ${two: Int})          => $one.set(pow($one.val, $two));
+
+        (${one: RangedFloat} -=  ${two: Float})        => $one.set($one.val -    $two);
+        (${one: RangedFloat} +=  ${two: Float})        => $one.set($one.val +    $two);
+        (${one: RangedFloat} *=  ${two: Float})        => $one.set($one.val *    $two);
+        (${one: RangedFloat} /=  ${two: Float})        => $one.set($one.val /    $two);
+        (${one: RangedFloat} %=  ${two: Float})        => $one.set($one.val %    $two);
+        (${one: RangedFloat} **= ${two: Float})        => $one.set(pow($one.val, $two));
+
+        (${one: RangedFloat} -=  ${two: RangedInt})    => $one.set($one.val -    $two.val);
+        (${one: RangedFloat} +=  ${two: RangedInt})    => $one.set($one.val +    $two.val);
+        (${one: RangedFloat} *=  ${two: RangedInt})    => $one.set($one.val *    $two.val);
+        (${one: RangedFloat} /=  ${two: RangedInt})    => $one.set($one.val /    $two.val);
+        (${one: RangedFloat} %=  ${two: RangedInt})    => $one.set($one.val %    $two.val);
+        (${one: RangedFloat} **= ${two: RangedInt})    => $one.set(pow($one.val, $two.val));
+    }
+}
+
+
+function main() {
+    var ri: RangedInt = RangedInt.new(0, 12, 3, WRAP);
+    for n in 0 ... 50 {
+        printf("cycle %d, value %d\n", n, ri.get());
+        ri -= 1;
+    }
+}
