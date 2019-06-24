@@ -1,0 +1,22 @@
+enum ClampMode {
+    CLIP;
+    WRAP;
+}
+
+
+function eucModInt(a: Int, b: Int) {
+    var m: Int = a % b;
+    if m < 0 {
+        m = if b < 0 then m - b else m + b;
+    }
+    return m;
+}
+
+
+function eucModFloat(a: Float, b: Float) {
+    var m: Float = fmod(a, b);
+    if m < 0 {
+        m = if b < 0 then m - b else m + b;
+    }
+    return m;
+}
