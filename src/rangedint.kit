@@ -133,8 +133,6 @@ struct RangedInt {
         (${one: RangedInt} !=  ${two: RangedInt}) => $one.get() != $two.get();
         (${one: RangedInt} >   ${two: RangedInt}) => $one.get() >  $two.get();
         (${one: RangedInt} <   ${two: RangedInt}) => $one.get() <  $two.get();
-        (${one: RangedInt} ||  ${two: RangedInt}) => $one.get() || $two.get();
-        (${one: RangedInt} &&  ${two: RangedInt}) => $one.get() && $two.get();
 
         (${one: RangedInt} ==  ${two: Int})       => $one.get() == $two;
         (${one: RangedInt} <=  ${two: Int})       => $one.get() <= $two;
@@ -142,8 +140,6 @@ struct RangedInt {
         (${one: RangedInt} !=  ${two: Int})       => $one.get() != $two;
         (${one: RangedInt} >   ${two: Int})       => $one.get() >  $two;
         (${one: RangedInt} <   ${two: Int})       => $one.get() <  $two;
-        (${one: RangedInt} ||  ${two: Int})       => $one.get() || $two;
-        (${one: RangedInt} &&  ${two: Int})       => $one.get() && $two;
 
         (${one: Int}       ==  ${two: RangedInt}) => $one       == $two.get();
         (${one: Int}       <=  ${two: RangedInt}) => $one       <= $two.get();
@@ -151,8 +147,6 @@ struct RangedInt {
         (${one: Int}       !=  ${two: RangedInt}) => $one       != $two.get();
         (${one: Int}       >   ${two: RangedInt}) => $one       >  $two.get();
         (${one: Int}       <   ${two: RangedInt}) => $one       <  $two.get();
-        (${one: Int}       ||  ${two: RangedInt}) => $one       || $two.get();
-        (${one: Int}       &&  ${two: RangedInt}) => $one       && $two.get();
 
         (${one: RangedInt} ==  ${two: Float})     => $one.get() == $two;
         (${one: RangedInt} <=  ${two: Float})     => $one.get() <= $two;
@@ -160,8 +154,6 @@ struct RangedInt {
         (${one: RangedInt} !=  ${two: Float})     => $one.get() != $two;
         (${one: RangedInt} >   ${two: Float})     => $one.get() >  $two;
         (${one: RangedInt} <   ${two: Float})     => $one.get() <  $two;
-        (${one: RangedInt} ||  ${two: Float})     => $one.get() || $two;
-        (${one: RangedInt} &&  ${two: Float})     => $one.get() && $two;
 
         (${one: Float}     ==  ${two: RangedInt}) => $one       == $two.get();
         (${one: Float}     <=  ${two: RangedInt}) => $one       <= $two.get();
@@ -169,8 +161,6 @@ struct RangedInt {
         (${one: Float}     !=  ${two: RangedInt}) => $one       != $two.get();
         (${one: Float}     >   ${two: RangedInt}) => $one       >  $two.get();
         (${one: Float}     <   ${two: RangedInt}) => $one       <  $two.get();
-        (${one: Float}     ||  ${two: RangedInt}) => $one       || $two.get();
-        (${one: Float}     &&  ${two: RangedInt}) => $one       && $two.get();
     }
 }
 
